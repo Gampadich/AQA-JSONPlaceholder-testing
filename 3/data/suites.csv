@@ -1,0 +1,8 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","233","test_get_non_existent_post","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
+"","221","test_delete","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
+"","53","test_get_all","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
+"","104","test_patch","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
+"","231","test_put","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
+"","104","test_post","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
+"","36","test_get_one","tests","2026-09-06","passed","2026-09-06","","JSONPlaceholder_test","",""
