@@ -1,0 +1,8 @@
+"BROKEN","EPIC","FAILED","FEATURE","PASSED","SKIPPED","STORY","UNKNOWN"
+"0","","0","Post section","1","0","Post /posts test","0"
+"0","","0","","1","0","GET non-existent post","0"
+"0","","0","","1","0","Get /posts/{id} test","0"
+"0","","0","Put section","1","0","Put /posts/1 test","0"
+"0","","0","Get section","1","0","Get /posts test","0"
+"0","","0","Patch section","1","0","Patch /posts/1 test","0"
+"0","","0","Delete section","1","0","Delete /posts/1 test","0"
