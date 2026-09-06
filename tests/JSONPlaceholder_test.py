@@ -2,7 +2,6 @@ import allure
 import requests
 from jsonschema import validate
 
-@allure.epic('API test')
 @allure.feature('Get section')
 @allure.story('Get /posts test')
 @allure.severity(allure.severity_level.CRITICAL)
