@@ -1,35 +1,122 @@
-API Automation Tests
+ AQA JSONPlaceholder Testing Suite
 
-Automated API tests for the JSONPlaceholder
- REST API using Python, Pytest, Requests, JSON Schema, and Allure Report.
+Automated API test suite for testing the JSONPlaceholder
+ REST API using Python, Pytest, Requests, and Allure Reports.
 
-The project covers the main CRUD operations for the /posts endpoint and validates both HTTP status codes and response data.
+The project also includes a GitHub Actions CI/CD pipeline that automatically runs the tests and publishes the Allure test report to GitHub Pages.
 
-Tech Stack
-Python 3
-Pytest — test framework
-Requests — HTTP client for API requests
-JSON Schema — response schema validation
-Allure — test reporting and test execution details
-Project Structure
-.
+ Tech Stack & Tools
+Language: Python 3.11+
+Test Framework: pytest
+HTTP Client: requests
+Reporting: allure-pytest
+Schema Validation: jsonschema
+CI/CD: GitHub Actions
+Report Hosting: GitHub Pages
+ Live Test Report
+
+Every push or pull request automatically triggers the GitHub Actions pipeline.
+
+The pipeline:
+
+Installs project dependencies.
+Runs the automated API test suite.
+Generates Allure test results.
+Publishes the Allure Report to GitHub Pages.
+
+ View Live Allure Report
+
+ Test Coverage
+
+The test suite covers the main CRUD operations for the /posts resource:
+
+Method	Endpoint	Expected Status	Validation
+GET	/posts	200	Response type and non-empty list
+GET	/posts/1	200	Response type and non-empty object
+GET	/poasts/14885267	404	Empty response object
+POST	/posts	201	JSON Schema validation
+PUT	/posts/1	200	JSON Schema validation
+PATCH	/posts/1	200	JSON Schema validation
+DELETE	/posts/1	200	Status code validation
+GET All Posts
+
+Verifies that:
+
+the API returns HTTP 200;
+the response body is a list;
+the list contains at least one element.
+GET Single Post
+
+Verifies that:
+
+the API returns HTTP 200;
+the response body is a dictionary/object;
+the response is not empty.
+GET Non-Existent Post
+
+Verifies that:
+
+the API returns HTTP 404;
+the response body is an empty object {}.
+POST Create Post
+
+Verifies that:
+
+the API returns HTTP 201;
+the response matches the expected JSON Schema.
+PUT Update Post
+
+Verifies that:
+
+the API returns HTTP 200;
+the response matches the expected JSON Schema.
+PATCH Update Post
+
+Verifies that:
+
+the API returns HTTP 200;
+the response matches the expected JSON Schema.
+DELETE Post
+
+Verifies that:
+
+the API returns HTTP 200.
+ JSON Schema Validation
+
+The project uses the jsonschema library to validate API responses for POST, PUT, and PATCH requests.
+
+The expected response contains the following fields:
+
+{
+  "id": 1,
+  "title": "Post title",
+  "body": "Post content",
+  "userId": 1
+}
+
+
+The schema validates that:
+
+id is a number;
+title is a string;
+body is a string;
+userId is a number;
+all four fields are required.
+ Project Structure
+AQA-JSONPlaceholder-testing/
+│
+├── .github/
+│   └── workflows/
+│       └── ...
+│
 ├── test.py
 ├── conftest.py
+├── requirements.txt
 └── README.md
 
 test.py
 
-Contains automated API tests for the /posts resource.
-
-The test suite covers:
-
-Getting all posts
-Getting a single post
-Handling a non-existent post
-Creating a post
-Updating a post with PUT
-Updating a post with PATCH
-Deleting a post
+Contains the automated API tests for the /posts resource.
 
 Allure annotations are used to organize tests by:
 
@@ -38,269 +125,123 @@ Feature
 Story
 Severity
 
-All API operations are also divided into explicit Allure steps for better visibility in the test report.
+Allure steps are also used to provide detailed information about API requests and assertions.
 
 conftest.py
 
-Contains shared Pytest fixtures used by the test suite:
+Contains reusable Pytest fixtures, including:
 
-url — base API URL
-post_data — payload for creating a post
-put_data — payload for updating a post
-patch_data — payload for partially updating a post
-schema — JSON Schema used to validate API responses
+API base URL;
+POST request data;
+PUT request data;
+PATCH request data;
+JSON Schema.
+requirements.txt
 
-All fixtures have scope="session".
+Contains the Python dependencies required to install and run the test suite.
 
-Installation
+ How to Run Locally
+1. Clone the repository
+git clone https://github.com/Gampadich/AQA-JSONPlaceholder-testing.git
+cd AQA-JSONPlaceholder-testing
 
-Make sure Python 3 is installed.
-
-Create a virtual environment:
-
-Windows
+2. Create a virtual environment
 python -m venv venv
-venv\Scripts\activate
 
-macOS / Linux
-python3 -m venv venv
+3. Activate the virtual environment
+
+Linux / macOS:
+
 source venv/bin/activate
 
 
-Install the required dependencies:
+Windows:
 
-pip install pytest requests allure-pytest jsonschema
+venv\Scripts\activate
 
-Test Cases
-GET All Posts
+4. Install dependencies
+pip install -r requirements.txt
 
-Endpoint:
-
-GET /posts
-
-
-The test verifies:
-
-Response status code is 200
-Response body is a list
-The list contains at least one element
-GET Single Post
-
-Endpoint:
-
-GET /posts/1
-
-
-The test verifies:
-
-Response status code is 200
-Response body is a dict
-The response is not empty
-GET Non-Existent Post
-
-Endpoint:
-
-GET /poasts/14885267
-
-
-The test verifies:
-
-Response status code is 404
-Response body is an empty object {}
-
-The endpoint contains the intentional /poasts path to test the API behavior for a non-existent resource.
-
-POST Create Post
-
-Endpoint:
-
-POST /posts
-
-
-Request payload:
-
-{
-  "title": "My Post",
-  "body": "Post content",
-  "userId": 1
-}
-
-
-The test verifies:
-
-Response status code is 201
-Response body conforms to the defined JSON Schema
-PUT Update Post
-
-Endpoint:
-
-PUT /posts/1
-
-
-Request payload:
-
-{
-  "id": 1,
-  "title": "Updated Title",
-  "body": "Updated Body",
-  "userId": 1
-}
-
-
-The test verifies:
-
-Response status code is 200
-Response body conforms to the defined JSON Schema
-PATCH Update Post
-
-Endpoint:
-
-PATCH /posts/1
-
-
-Request payload:
-
-{
-  "title": "Only Title Changed"
-}
-
-
-The test verifies:
-
-Response status code is 200
-Response body conforms to the defined JSON Schema
-DELETE Post
-
-Endpoint:
-
-DELETE /posts/1
-
-
-The test verifies:
-
-Response status code is 200
-JSON Schema Validation
-
-The project uses the jsonschema library to validate responses returned by the POST, PUT, and PATCH requests.
-
-The expected response structure is:
-
-{
-  "type": "object",
-  "properties": {
-    "id": {
-      "type": "number"
-    },
-    "title": {
-      "type": "string"
-    },
-    "body": {
-      "type": "string"
-    },
-    "userId": {
-      "type": "number"
-    }
-  },
-  "required": [
-    "id",
-    "title",
-    "body",
-    "userId"
-  ]
-}
-
-
-Validation is performed with:
-
-validate(instance=json_data, schema=schema)
-
-
-This ensures that the API response contains all required fields and that each field has the expected data type.
-
-Running Tests
-
-Run all tests with:
-
+5. Run the tests
 pytest
 
-
-Run tests with Allure result generation:
-
+6. Run tests with Allure results
 pytest --alluredir=allure-results
 
+7. Serve the Allure Report locally
 
-The command generates an allure-results directory containing the test execution data.
+Make sure Allure is installed and available in your system PATH.
 
-Allure Report
+Then run:
 
-The tests use Allure annotations to provide detailed test reporting.
-
-The test hierarchy includes:
-
-API test
-│
-├── Get section
-│   ├── Get /posts test
-│   ├── Get /posts/{id} test
-│   └── GET non-existent post
-│
-├── Post section
-│   └── Post /posts test
-│
-├── Put section
-│   └── Put /posts/1 test
-│
-├── Patch section
-│   └── Patch /posts/1 test
-│
-└── Delete section
-    └── Delete /posts/1 test
+allure serve allure-results
 
 
-Critical CRUD tests are marked with:
+The generated report will open automatically in your browser.
 
+ CI/CD
+
+The project uses GitHub Actions to automate test execution.
+
+The CI/CD pipeline is triggered automatically on:
+
+Push events
+Pull requests
+
+The workflow runs the test suite and generates an Allure Report that is published to GitHub Pages.
+
+This provides a continuously updated test report without requiring local test execution.
+
+ Allure Reporting
+
+Allure provides detailed information about the test execution, including:
+
+Passed and failed tests;
+Test duration;
+Test steps;
+Test severity;
+Epic / Feature / Story hierarchy;
+Test execution history.
+
+The test suite uses Allure decorators such as:
+
+@allure.epic("API test")
+@allure.feature("Get section")
+@allure.story("Get /posts test")
 @allure.severity(allure.severity_level.CRITICAL)
 
 
-This allows critical tests to be easily identified in the Allure report.
+This makes the test results easier to analyze and navigate.
 
-To generate and open the report:
+ API Under Test
 
-pytest --alluredir=allure-results
-allure serve allure-results
-
-API Under Test
-
-The project uses JSONPlaceholder, a free fake REST API for testing and prototyping.
+The project uses JSONPlaceholder, a free fake REST API designed for testing and prototyping.
 
 Base URL:
 
 https://jsonplaceholder.typicode.com
 
 
-The tests interact with the /posts resource.
+The main resource covered by this project is:
 
-Test Coverage
-HTTP Method	Endpoint	Expected Status	Validation
-GET	/posts	200	Response type and non-empty list
-GET	/posts/1	200	Response type and non-empty object
-GET	/poasts/14885267	404	Empty response object
-POST	/posts	201	JSON Schema
-PUT	/posts/1	200	JSON Schema
-PATCH	/posts/1	200	JSON Schema
-DELETE	/posts/1	200	Status code
-Key Features
-REST API test automation
-CRUD endpoint coverage
-HTTP status code validation
-Response type validation
-JSON Schema validation
-Reusable Pytest fixtures
-Allure test reporting
-Allure test steps and test categorization
-Critical test severity classification
-Notes
+/posts
 
-JSONPlaceholder is a fake REST API intended for testing and prototyping. The API simulates CRUD operations but does not persist changes like a production database.
+ Project Goals
 
-This project is intended as an example of API test automation using Python and demonstrates how to combine Pytest, Requests, JSON Schema validation, and Allure reporting.
+The main goals of this project are to demonstrate:
+
+API test automation with Python;
+Pytest test organization;
+HTTP request handling with Requests;
+CRUD API testing;
+JSON Schema validation;
+Reusable Pytest fixtures;
+Allure reporting;
+Test categorization with Allure;
+CI/CD test execution with GitHub Actions;
+Automatic test report publishing with GitHub Pages.
+  Author
+
+Gampadich
+
+🔗 GitHub Repository
