@@ -5,7 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # Дозволяє запускати тестування вручну через інтерфейс GitHub
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11' # Версія Python у системі runner
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
@@ -48,10 +48,16 @@ jobs:
         allure_results: allure-results
         gh_pages: gh-pages
         allure_history: allure-history
+        keep_reports: 20
+
+    - name: Create .nojekyll file
+      if: always()
+      run: touch allure-history/.nojekyll
 
     - name: Deploy Allure Report to GitHub Pages
       if: always()
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
         publish_dir: allure-history
